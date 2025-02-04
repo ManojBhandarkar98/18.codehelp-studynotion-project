@@ -20,6 +20,20 @@ exports.createCourse = async (req, res) => {
                 message:'All fields are required',
             });
         }
+
+        //check for instructor
+        const userId = req.user.id;
+        const instructorDetails = await User.findById(userId);
+        console.log("Instructor Details: " , instructorDetails);
+        //TODO: Verify that userId and instructorDetails._id  are same or different ?
+
+        if(!instructorDetails) {
+            return res.status(404).json({
+                success:false,
+                message:'Instructor Details not found',
+            });
+        }
+
         //create an entry for new Course
         const newCourse = await Course.create({
             courseName,
@@ -42,7 +56,10 @@ exports.createCourse = async (req, res) => {
             {new:true},
         );
 
-         //return response
+        //update the TAG ka schema 
+        //TODO: HW
+
+        //return response
         return res.status(200).json({
             success:true,
             message:"Course Created Successfully",
