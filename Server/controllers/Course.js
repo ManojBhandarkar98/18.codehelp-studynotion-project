@@ -31,6 +31,17 @@ exports.createCourse = async (req, res) => {
             thumbnail:thumbnailImage.secure_url,
         })
 
+        //add the new course to the user schema of Instructor
+        await User.findByIdAndUpdate(
+            {_id: instructorDetails._id},
+            {
+                $push: {
+                    courses: newCourse._id,
+                }
+            },
+            {new:true},
+        );
+
          //return response
         return res.status(200).json({
             success:true,
