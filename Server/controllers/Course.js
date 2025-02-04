@@ -34,6 +34,15 @@ exports.createCourse = async (req, res) => {
             });
         }
 
+        //check given tag is valid or not
+        const tagDetails = await Tag.findById(tag);
+        if(!tagDetails) {
+            return res.status(404).json({
+                success:false,
+                message:'Tag Details not found',
+            });
+        }
+
         //create an entry for new Course
         const newCourse = await Course.create({
             courseName,
